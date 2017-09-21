@@ -3,16 +3,44 @@ package br.edu.uni7.persistence;
 import java.util.Date;
 import java.util.List;
 
-public class Avaliacao {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@Entity
+@Table(name = "TBL_AVALIACOES")
+public class Avaliacao{
+
+	@Id
+	@Column(name = "PK_AVAL")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DT_DATA_AVALIACAO")
 	private Date data;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "FK_PRO")
 	private Produto produto;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "FK_USU")
 	private Usuario autor;	
 	
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="FK_AVAL")
 	private List<ItemAvaliacao> itensAvaliacao;
 	
 	public Long getId() {

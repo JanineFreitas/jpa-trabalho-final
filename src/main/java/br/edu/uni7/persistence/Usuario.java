@@ -1,11 +1,36 @@
 package br.edu.uni7.persistence;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "TBL_USUARIOS")
 public class Usuario {
 	
+	@Id
+	@Column(name = "PK_USU")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "NM_NOME")
+	@NotNull
 	private String nome;
 
+	//O nome do usuário não deve ser nulo, nem vazio.
+	@PrePersist @PreUpdate
+	public void validarCampos() {
+		if(nome == null || nome.isEmpty()){
+			throw new IllegalStateException("O atributo nome é obrigatório");
+		}
+	}
+	
 	public Long getId() {
 		return id;
 	}

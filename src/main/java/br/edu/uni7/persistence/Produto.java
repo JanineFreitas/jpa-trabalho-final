@@ -1,15 +1,42 @@
 package br.edu.uni7.persistence;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.ManyToAny;
+
+@Entity
+@Table(name = "TBL_PRODUTOS")
 public class Produto {
 
+	@Id
+	@Column(name= "PK_PROD")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name="NM_NOME")
 	private String nome;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "FK_DEP")
 	private Departamento departamento;
 	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "FK_USUARIO")
 	private Usuario responsavel;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name="ST_SITUACAO")
 	private Situacao situacao;
 
 	public Long getId() {
