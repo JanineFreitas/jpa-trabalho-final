@@ -1,0 +1,43 @@
+select distinct a.* from tbl_avaliacoes a
+inner join TBL_ITENS_AVALIACAO it on it.fk_aval = a.pk_aval
+inner join tbl_issues i on i.fk_item_aval =  it.pk_item_aval
+where i.nu_qtde_votos > 3;
+
+select
+        distinct avaliacao1_.PK_AVAL as PK_AVAL1_0_,
+        avaliacao1_.FK_USU as FK_USU3_0_,
+        avaliacao1_.DT_DATA_AVALIACAO as DT_DATA_2_0_,
+        avaliacao1_.FK_PRO as FK_PRO4_0_ 
+    from
+        TBL_ISSUES issue0_ 
+    inner join
+        TBL_ITENS_AVALIACAO issue0_1_ 
+            on issue0_.FK_ITEM_AVAL=issue0_1_.PK_ITEM_AVAL 
+    join
+        TBL_AVALIACOES avaliacao1_ on issue0_1_.fk_aval = avaliacao1_.pk_aval
+    where
+        issue0_.NU_QTDE_VOTOS>3
+
+select COUNT(i.ST_STATUS), i.ST_STATUS from TBL_DEBITOS_TECNICOS dt
+inner join TBL_ITENS_AVALIACAO i on dt.fk_item_aval = i.pk_item_aval
+inner join TBL_AVALIACOES a on i.fk_aval = a.pk_aval
+inner join TBL_PRODUTOS p on a.fk_pro = pk_prod
+where p.pk_prod = 1
+group by i.ST_STATUS;
+
+select COUNT(i.ST_STATUS), i.ST_STATUS from TBL_AVALIACOES a
+INNER JOIN TBL_PRODUTOS p  on a.fk_pro = pk_prod
+INNER JOIN TBL_ITENS_AVALIACAO i on a.PK_AVAL = i.FK_AVAL
+INNER JOIN TBL_DEBITOS_TECNICOS d on i.pk_item_aval = d.fk_item_aval
+where p.pk_prod = 1
+group by i.ST_STATUS;
+
+SELECT MAX(y.numeros)
+FROM (
+	SELECT COUNT(d.pk_dep) AS numeros 
+	FROM TBL_DEPARTAMENTOS d
+	INNER JOIN TBL_PRODUTOS p ON d.pk_dep = p.fk_dep
+	INNER JOIN TBL_USUARIOS u ON p.fk_usuario = u.pk_usu
+	INNER JOIN TBL_AVALIACOES a ON u.pk_usu = a.FK_USU
+	GROUP BY d.pk_dep
+	) y

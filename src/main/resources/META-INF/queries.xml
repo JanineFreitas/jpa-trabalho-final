@@ -7,8 +7,35 @@
 	<named-query name="Produto.todos">
 		<query>SELECT p FROM Produto p </query>
 	</named-query>
-	
+
 	<named-query name="Avaliacao.issuesAcima3Votos">
-		<query>SELECT p FROM Produto p </query>
+		<query>SELECT DISTINCT a FROM Avaliacao a
+			   INNER JOIN a.itensAvaliacao it
+<!-- 			   WHERE i.quantidadeDeVotos > 3  -->
+			   
+		</query>
 	</named-query>
+	
+<!-- 	<named-query name="Produto.qtdeDebitosTecnicos"> -->
+<!-- 		<query>SELECT COUNT(d.status), d.status  -->
+<!-- 			   FROM Avaliacao a -->
+<!-- 			   INNER JOIN Produto p on a.produto p -->
+<!-- 			   INNER JOIN ItemAvaliacao d on a.itensAvaliacao -->
+<!-- 			   WHERE p.id = :idProduto -->
+<!-- 			   GROUP BY d.status -->
+<!-- 		</query> -->
+<!-- 	</named-query> -->
+	
+<!-- 	<named-query name="Departamento.maiorQtdeAvaliacoes"> -->
+<!-- 		<query>SELECT MAX(y.numeros) -->
+<!-- 			   FROM ( -->
+<!-- 					SELECT COUNT(d.pk_dep) AS numeros  -->
+<!-- 					FROM TBL_DEPARTAMENTOS d -->
+<!-- 					INNER JOIN TBL_PRODUTOS p ON d.pk_dep = p.fk_dep -->
+<!-- 					INNER JOIN TBL_USUARIOS u ON p.fk_usuario = u.pk_usu -->
+<!-- 					INNER JOIN TBL_AVALIACOES a ON u.pk_usu = a.FK_USU -->
+<!-- 					GROUP BY d.pk_dep -->
+<!-- 					) y -->
+<!-- 		</query> -->
+<!-- 	</named-query> -->
 </entity-mappings>
