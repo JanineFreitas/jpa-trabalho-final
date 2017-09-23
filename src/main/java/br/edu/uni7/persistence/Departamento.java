@@ -31,6 +31,16 @@ public class Departamento {
 		}
 	}
 	
+	public Departamento() {
+		super();
+	}
+
+	public Departamento(Long id, String nome) {
+		super();
+		this.id = id;
+		this.nome = nome;
+	}
+
 	public Long getId() {
 		return id;
 	}
