@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "TBL_PRODUTOS")
@@ -27,10 +29,14 @@ public class Produto {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "FK_DEP")
+	@NotNull
+	@Valid
 	private Departamento departamento;
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "FK_USUARIO")
+	@NotNull
+	@Valid
 	private Usuario responsavel;
 	
 	@Enumerated(EnumType.STRING)

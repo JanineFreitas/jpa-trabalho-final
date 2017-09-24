@@ -1,12 +1,20 @@
 package br.edu.uni7.persistence;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -53,5 +61,114 @@ public class ExerciciosTest {
 		TypedQuery<Departamento> p = entityManager.createNamedQuery("Departamento.maiorQtdeAvaliacoes", Departamento.class);
 		Assert.assertTrue(p.getSingleResult().getNome() != null);
 		System.out.println("Id: "+p.getSingleResult().getId() +" nome: "+p.getSingleResult().getNome());
+	}
+	
+	//Validações
+	@Test
+	public void nomeUsuarioNaoPodeSerNull() {
+		Usuario user = new Usuario();
+		user.setNome("");
+		try {
+			entityManager.persist(user);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void nomeDepartamentoNaoPodeSerNull() {
+		Departamento d = new Departamento();
+		d.setNome("");
+		try {
+			entityManager.persist(d);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void departamentoDeProdutoNaoPodeSerNull() {
+		Usuario user = new Usuario();
+		user.setNome("Usuario 174");
+		
+		Produto p = new Produto();
+		p.setNome("Produto 174");
+		p.setResponsavel(user);
+		p.setSituacao(Situacao.HABILITADO);
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Assert.assertTrue(validator.validate(p).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.NotNull"));
+		System.out.println("O departamento de produto não pode ser null.");
+	}
+	
+	@Test
+	public void responsavelPeloProdutoNaoPodeSerNull() {
+		Departamento dep = new Departamento();
+		dep.setNome("Departamento 174");
+		
+		Produto p = new Produto();
+		p.setNome("Produto 174");
+		p.setDepartamento(dep);
+		p.setSituacao(Situacao.HABILITADO);
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Assert.assertTrue(validator.validate(p).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.NotNull"));
+		System.out.println("O resposável pelo produto não poder ser nulo.");
+	}
+	
+	@Test
+	public void produtoEAutorDaAvaliacaoNaoPodeSerNull() {
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setData(new Date());
+		avaliacao.setItensAvaliacao(new ArrayList<>());
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		
+		Assert.assertTrue(validator.validate(avaliacao).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.NotNull") || validator.validate(avaliacao).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.Size.message"));
+		System.out.println("Produto não pode ser null, Autor não pode ser null e a Avaliação tem que ter pelo menos um item.");
+	}
+	
+	@Test
+	public void comentarioESatatusDeItemAvaliacaoNaoPodeSerNull() {
+		Issue item = new Issue();
+		item.setStatus(null);
+		item.setQuantidadeDeVotos(1);
+		item.setComentario(gerarComentario());
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		
+		Assert.assertTrue(validator.validate(item).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.NotNull"));
+		System.out.println("O comentário não pode ser nulo, nem ser vazio e deve ter no máximo 500 caracteres.");
+		System.out.println("O status não pode ser nulo.");
+	}
+	
+	private String gerarComentario() {
+		String alfabeto="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String comentario = "";
+		Random generator = new Random(); 
+		for (int i = 0; i < 600; i++) {
+			comentario += alfabeto.charAt(generator.nextInt(alfabeto.length()));
+		}
+		return comentario;
+	}
+	
+	@Test
+	public void custoDebitoTecnico() {
+		DebitoTecnico debito = new DebitoTecnico();
+		debito.setComentario("comentario");
+		debito.setImpacto(Impacto.ALTO);
+		debito.setCusto(new Long(6));
+		debito.setStatus(Status.ABERTO);
+		
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		
+		Assert.assertTrue(validator.validate(debito).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.Max.message"));
 	}
 }

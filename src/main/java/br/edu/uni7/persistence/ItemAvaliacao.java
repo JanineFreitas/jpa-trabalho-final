@@ -8,7 +8,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="TBL_ITENS_AVALIACAO")
@@ -21,11 +27,22 @@ public abstract class ItemAvaliacao {
 	private Long id;
 	
 	@Column(name = "NM_COMENTARIO")
+	@NotNull
+	@NotEmpty
+	@Size (max=500)
 	private String comentario;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="ST_STATUS")
+	@NotNull
 	private Status status;
+	
+	@PrePersist @PreUpdate
+	public void validarCampos() {
+		if(comentario == null || comentario.isEmpty()){
+			throw new IllegalStateException("O atributo comentario é obrigatório");
+		}
+	}
 	
 	public Long getId() {
 		return id;

@@ -7,6 +7,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "TBL_DEBITOS_TECNICOS")
@@ -15,6 +17,8 @@ import javax.persistence.Table;
 public class DebitoTecnico extends ItemAvaliacao {
 	
 	@Column(name = "NU_CUSTO")
+	@Min(1)
+	@Max(5)
 	private Long custo;
 	
 	@Enumerated(EnumType.STRING)

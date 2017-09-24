@@ -10,6 +10,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name = "TBL_USUARIOS")
 public class Usuario {
@@ -21,6 +23,7 @@ public class Usuario {
 	
 	@Column(name = "NM_NOME")
 	@NotNull
+	@NotEmpty
 	private String nome;
 
 	//O nome do usuário não deve ser nulo, nem vazio.

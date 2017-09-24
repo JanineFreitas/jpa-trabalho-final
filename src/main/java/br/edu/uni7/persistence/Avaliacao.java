@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "TBL_AVALIACOES")
@@ -31,14 +34,19 @@ public class Avaliacao{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "FK_PRO")
+	@NotNull
+	@Valid
 	private Produto produto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "FK_USU")
+	@NotNull
+	@Valid
 	private Usuario autor;	
 	
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_AVAL")
+	@Size (min=1)
 	private List<ItemAvaliacao> itensAvaliacao;
 	
 	public Long getId() {

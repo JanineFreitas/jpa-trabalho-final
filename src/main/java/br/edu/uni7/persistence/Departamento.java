@@ -10,6 +10,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name ="TBL_DEPARTAMENTOS")
 public class Departamento {
@@ -21,6 +23,7 @@ public class Departamento {
 	
 	@Column(name = "NM_NOME")
 	@NotNull
+	@NotEmpty
 	private String nome;
 
 	//Nome do departamento não pode ser nulo, nem vazio.
