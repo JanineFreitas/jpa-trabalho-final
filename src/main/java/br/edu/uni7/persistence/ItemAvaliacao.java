@@ -36,12 +36,17 @@ public abstract class ItemAvaliacao {
 	@Column(name="ST_STATUS")
 	@NotNull
 	private Status status;
+//	
+//	@PrePersist @PreUpdate
+//	public void validarCampos() {
+//		if(comentario == null || comentario.isEmpty()){
+//			throw new IllegalStateException("O atributo comentario é obrigatório");
+//		}
+//	}
 	
 	@PrePersist @PreUpdate
-	public void validarCampos() {
-		if(comentario == null || comentario.isEmpty()){
-			throw new IllegalStateException("O atributo comentario é obrigatório");
-		}
+	public void validarCamposStatus() {
+		this.status = Status.ABERTO;
 	}
 	
 	public Long getId() {

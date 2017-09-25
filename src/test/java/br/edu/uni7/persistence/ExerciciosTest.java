@@ -2,7 +2,6 @@ package br.edu.uni7.persistence;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -11,7 +10,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -38,13 +36,11 @@ public class ExerciciosTest {
 	}
 
 	// 2º Consulta
-	// @Test
-	// public void avaliacaoIssuesAcima3Votos() {
-	// TypedQuery<Avaliacao> avaliacao =
-	// entityManager.createNamedQuery("Avaliacao.issuesAcima3Votos",
-	// Avaliacao.class);
-	// Assert.assertNotNull(avaliacao.getResultList());
-	// }
+	@Test
+	public void avaliacaoIssuesAcima3Votos() {
+		TypedQuery<Avaliacao> avaliacao = entityManager.createNamedQuery("Avaliacao.issuesAcima3Votos", Avaliacao.class);
+		Assert.assertNotNull(avaliacao.getResultList());
+	}
 	
 	//3º Consulta
 	@SuppressWarnings("rawtypes")
@@ -170,5 +166,22 @@ public class ExerciciosTest {
 		Validator validator = factory.getValidator();
 		
 		Assert.assertTrue(validator.validate(debito).iterator().next().getConstraintDescriptor().toString().contains("javax.validation.constraints.Max.message"));
+	}
+	
+	//Eventos
+	@Test
+	public void dataAvaliacaoPreenchida() {
+		Avaliacao ava = new Avaliacao();
+		ava.setAutor(new Usuario());
+		ava.setProduto(new Produto());
+		ava.setItensAvaliacao(new ArrayList<>());
+		ava.setData(new Date(14, 9, 1994));
+		
+		try {
+			entityManager.persist(ava);
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }

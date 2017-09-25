@@ -3,6 +3,8 @@ package br.edu.uni7.persistence;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -14,6 +16,11 @@ public class Issue extends ItemAvaliacao {
 	
 	@Column(name = "NU_QTDE_VOTOS")
 	private Integer quantidadeDeVotos;
+	
+	@PrePersist @PreUpdate
+	public void validarCampos() {
+		this.quantidadeDeVotos = 0;
+	}
 	
 	public Integer getQuantidadeDeVotos() {
 		return quantidadeDeVotos;

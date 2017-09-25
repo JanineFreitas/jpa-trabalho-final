@@ -8,12 +8,16 @@
 		<query>SELECT p FROM Produto p </query>
 	</named-query>
 
-<!-- 	<named-query name="Avaliacao.issuesAcima3Votos"> -->
-<!-- 		<query>SELECT DISTINCT a FROM Avaliacao a -->
-<!-- 			   JOIN a.itensAvaliacao it -->
-<!-- 		</query> -->
-<!-- 	</named-query> -->
-	
+	<named-query name="Avaliacao.issuesAcima3Votos">
+		<query>
+			SELECT DISTINCT a FROM Avaliacao a
+			   JOIN a.itensAvaliacao it
+			   WHERE it.id in (
+			   SELECT DISTINCT i.id FROM Issue i WHERE i.quantidadeDeVotos  > 3)
+		</query>
+
+	</named-query>
+		
 	<named-query name="Produto.qtdeDebitosTecnicos">
 		<query>SELECT COUNT(d.status), d.status 
 			   FROM Avaliacao a

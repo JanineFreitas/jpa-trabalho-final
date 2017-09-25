@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,6 +50,13 @@ public class Avaliacao{
 	@JoinColumn(name="FK_AVAL")
 	@Size (min=1)
 	private List<ItemAvaliacao> itensAvaliacao;
+	
+	@PrePersist @PreUpdate
+	public void validarCampos() {
+		if(data == null){
+			this.data = new Date();
+		}
+	}
 	
 	public Long getId() {
 		return id;
