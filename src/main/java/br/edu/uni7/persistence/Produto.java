@@ -24,6 +24,7 @@ public class Produto {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull
 	@Column(name="NM_NOME")
 	private String nome;
 	
@@ -39,6 +40,7 @@ public class Produto {
 	@Valid
 	private Usuario responsavel;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name="ST_SITUACAO")
 	private Situacao situacao;

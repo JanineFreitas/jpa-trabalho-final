@@ -3,6 +3,7 @@ package br.edu.uni7.persistence;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +31,7 @@ public class Avaliacao{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "DT_DATA_AVALIACAO")
 	private Date data;
@@ -46,7 +48,7 @@ public class Avaliacao{
 	@Valid
 	private Usuario autor;	
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(cascade= {CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval=true, fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_AVAL")
 	@Size (min=1)
 	private List<ItemAvaliacao> itensAvaliacao;

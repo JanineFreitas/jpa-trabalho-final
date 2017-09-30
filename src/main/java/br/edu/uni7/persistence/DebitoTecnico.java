@@ -9,6 +9,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "TBL_DEBITOS_TECNICOS")
@@ -21,6 +22,7 @@ public class DebitoTecnico extends ItemAvaliacao {
 	@Max(5)
 	private Long custo;
 	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name="ST_IMPACTO")
 	private Impacto impacto;

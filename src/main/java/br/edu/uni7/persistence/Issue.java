@@ -7,6 +7,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "TBL_ISSUES")
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name="FK_ITEM_AVAL")
 public class Issue extends ItemAvaliacao {
 	
+	@NotNull
 	@Column(name = "NU_QTDE_VOTOS")
 	private Integer quantidadeDeVotos;
 	
